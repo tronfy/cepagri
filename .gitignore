@@ -109,5 +109,5 @@ $RECYCLE.BIN/
 # Base de dados do Cepagri
 cepagri.csv
 
-# Graficos ggplot2
-*.pdf
+# Graficos salvos
+plot/
