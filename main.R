@@ -9,9 +9,12 @@ cepagri <- read.csv("cepagri.csv", header = FALSE, sep = ";", col.names = names)
 
 # criar dataframe, tratar tipos de coluna e erros
 df <- data.frame(cepagri)
-df <- df %>%
-  mutate(horario = as_datetime(df$horario, format = "%d/%m/%Y-%H:%M")) %>%
-  mutate(temp = as.numeric(df$temp))
+# ignorar warning de leituras N/A, vamos corrigir isso na próxima linha
+suppressWarnings({
+  df <- df %>%
+    mutate(horario = as_datetime(df$horario, format = "%d/%m/%Y-%H:%M")) %>%
+    mutate(temp = as.numeric(df$temp))
+})
 df <- na.omit(df)
 
 # extrair dados entre 2015-01-01 e 2020-12-31
@@ -24,23 +27,35 @@ salvar <- function(filename, plot) {
   if (!dir.exists("plot")) {
     dir.create("plot")
   }
-  ggsave(paste("plot/", filename, ".png", sep=""), plot)
+  ggsave(paste("plot/", filename, ".png", sep=""), plot + theme(text = element_text(size = 20)), height = 7, width = 7 * 2.5)
 }
-
 
 
 ### MÉDIAS DIÁRIAS ###
 diario <- df %>%
-  mutate(dia = floor_date(df$horario, unit = "day")) %>%
-  group_by(dia) %>%
+  mutate(data = floor_date(df$horario, unit = "day")) %>%
+  group_by(data) %>%
   summarize(
-    temp_media = mean(as.numeric(temp)),
+    temp_media = mean(temp),
     umid_media = mean(umid),
     vent_media = mean(vento),
   )
 
-head(diario)
+salvar("diario_temp", ggplot(diario, aes(data, temp_media)) + geom_point(colour = 'red') + labs(y = "temperatura média"))
+salvar("diario_umid", ggplot(diario, aes(data, umid_media)) + geom_point(colour = 'blue') + labs(y = "umidade média"))
+salvar("diario_vent", ggplot(diario, aes(data, vent_media)) + geom_point(colour = 'green') + labs(y = "vento médio"))
 
-salvar("diario_temp", ggplot(diario, aes(dia, temp_media,)) + geom_point(colour = 'red') + labs(y = "temperatura média"))
-salvar("diario_umid", ggplot(diario, aes(dia, umid_media,)) + geom_point(colour = 'blue') + labs(y = "umidade média"))
-salvar("diario_vent", ggplot(diario, aes(dia, vent_media,)) + geom_point(colour = 'green') + labs(y = "vento médio"))
+
+### MÉDIAS POR HORA ###
+porHora <- df %>%
+  mutate(hora = floor_date(df$horario, unit = "h")) %>%
+  group_by(hora) %>%
+  summarize(
+    temp_media = mean(temp),
+    umid_media = mean(umid),
+    vent_media = mean(vento),
+  )
+
+salvar("hora_temp", ggplot(porHora, aes(hora, temp_media)) + geom_point(colour = 'red') + labs(y = "temperatura média"))
+salvar("hora_umid", ggplot(porHora, aes(hora, umid_media)) + geom_point(colour = 'blue') + labs(y = "umidade média"))
+salvar("hora_vent", ggplot(porHora, aes(hora, vent_media)) + geom_point(colour = 'green') + labs(y = "vento médio"))
