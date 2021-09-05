@@ -111,3 +111,8 @@ cepagri.csv
 
 # Graficos salvos
 plot/
+
+# RStudio Knit ignored files
+*.log
+*.tex
+*.nb.html
