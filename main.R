@@ -10,7 +10,7 @@ cepagri <- read.csv("cepagri.csv", header = FALSE, sep = ";", col.names = names)
 # criar dataframe, tratar tipos de coluna e erros
 df <- data.frame(cepagri)
 df <- df %>%
-  mutate(horario = as.Date(df$horario, format = "%d/%m/%Y")) %>%
+  mutate(horario = as_datetime(df$horario, format = "%d/%m/%Y-%H:%M")) %>%
   mutate(temp = as.numeric(df$temp))
 df <- na.omit(df)
 
@@ -31,13 +31,15 @@ salvar <- function(filename, plot) {
 
 ### MÉDIAS DIÁRIAS ###
 diario <- df %>%
-  mutate(dia = floor_date(df$horario)) %>%
+  mutate(dia = floor_date(df$horario, unit = "day")) %>%
   group_by(dia) %>%
   summarize(
     temp_media = mean(as.numeric(temp)),
     umid_media = mean(umid),
     vent_media = mean(vento),
   )
+
+head(diario)
 
 salvar("diario_temp", ggplot(diario, aes(dia, temp_media,)) + geom_point(colour = 'red') + labs(y = "temperatura média"))
 salvar("diario_umid", ggplot(diario, aes(dia, umid_media,)) + geom_point(colour = 'blue') + labs(y = "umidade média"))
