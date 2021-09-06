@@ -53,14 +53,13 @@ salvar("diario_vent", ggplot(diario, aes(data, vent_media)) + geom_point(colour 
 
 ### MÉDIAS POR HORA ###
 porHora <- df %>%
-  mutate(hora = floor_date(df$horario, unit = "h")) %>%
+  mutate(hora = hour(horario)) %>%
   group_by(hora) %>%
   summarize(
     temp_media = mean(temp),
     umid_media = mean(umid),
     vent_media = mean(vento),
   )
-
-salvar("hora_temp", ggplot(porHora, aes(hora, temp_media)) + geom_point(colour = 'red') + labs(y = "temperatura média"))
-salvar("hora_umid", ggplot(porHora, aes(hora, umid_media)) + geom_point(colour = 'blue') + labs(y = "umidade média"))
-salvar("hora_vent", ggplot(porHora, aes(hora, vent_media)) + geom_point(colour = 'green') + labs(y = "vento médio"))
+salvar("hora_temp", ggplot(porHora, aes(x = hora, y = temp_media)) + geom_bar(stat="identity"))
+salvar("hora_umid", ggplot(porHora, aes(x = hora, y = umid_media)) + geom_bar(stat="identity"))
+salvar("hora_vent", ggplot(porHora, aes(x = hora, y = vent_media)) + geom_bar(stat="identity"))
