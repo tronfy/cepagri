@@ -99,13 +99,13 @@ Como nossa segunda analise, decidimos estudar quais eram as temperaturas, taxas 
 
 ![](./plot/hora_temp.png)
 
-Ao analizar o gráfico da temperatura média por hora, descobrimos que a temperatura tende a aumentar progressivamente das 6:00 da manhã até as 15:00 da tarde, quando atinge seu pico, e então diminuir até as 6:00 da manhã do dia seguinte.
+Ao analisar o gráfico da temperatura média por hora, descobrimos que a temperatura tende a aumentar progressivamente das 6:00 da manhã até as 15:00 da tarde, quando atinge seu pico, e então diminuir até as 6:00 da manhã do dia seguinte.
 
 ### Umidade
 
 ![](./plot/hora_umid.png)
 
-Em contrapartida, ao analizar o gráfico de umidade média por hora, podemos observar que seu comportamento é o oposto do esperado após realizar a análise das relações entre as estações do ano, e a temperatuda, umidade e velocidade do vento, onde a umidade tendia a ser maior quanto maior fosse a temperatura. Aqui, vemos que a umidade encontra-se em seu pico as 6:00 da manhã, de onde diminui até atingir seu mínimo às 15:00 da tarde, para então aumentar até as 6:00 da manhã do dia seguinte.
+Em contrapartida, ao analisar o gráfico de umidade média por hora, podemos observar que seu comportamento é o oposto do esperado após realizar a análise das relações entre as estações do ano, e a temperatuda, umidade e velocidade do vento, onde a umidade tendia a ser maior quanto maior fosse a temperatura. Aqui, vemos que a umidade encontra-se em seu pico as 6:00 da manhã, de onde diminui até atingir seu mínimo às 15:00 da tarde, para então aumentar até as 6:00 da manhã do dia seguinte.
 
 ### Vento
 
@@ -144,3 +144,13 @@ Além dessa, podemos encontrar outras correlações:
 * **aprox. 88%** temperatura: maior temperatura causa maior sensação térmica
 * **aprox. -58%** umidade: menor umidade causa maior sensação térmica
 * **aprox. -21%** vento: menos vento causa maior sensação térmica
+
+
+
+### Crise Hídrica de 2014-2015
+
+Houve uma grande e famosa crise hídrica em todo o Brasil nos anos de 2014 e 2015. Levando em conta que temos em mãos os dados do CEPAGRI de 2015, um dos anos da crise, decidimos analisar a umidade no ano de 2015 usando o gráfico de umidade diária.
+
+![](./plot/diario_umid.png)
+
+Vemos no gráfico que a umidade no começo de 2015 estava comparativamente alta com relação ao mesmo período dos demais anos da análise. Tal resultado nos deixou surpresos, uma vez em que acretitávamos que a umidade relativa do ar tenderia a ser menor com relação à um ano sem crise hídrica. Talvez a água que estava em falta tivesse evaporado e se encontrava no ar, o que explicaria a elevada umidade do ar, embora deixaria questões sobre o por que da falta de chuvas.
