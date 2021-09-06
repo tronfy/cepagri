@@ -28,11 +28,11 @@ df <- df[
   df$horario <= "2020-12-31",
 ]
 
-salvar <- function(filename, plot) {
+salvar <- function(filename, plot, aspect_ratio=2.5) {
   if (!dir.exists("plot")) {
     dir.create("plot")
   }
-  ggsave(paste("plot/", filename, ".png", sep=""), plot + theme(text = element_text(size = 20)), height = 7, width = 7 * 2.5)
+  ggsave(paste("plot/", filename, ".png", sep=""), plot + theme(text = element_text(size = 20)), height = 7, width = 7 * aspect_ratio)
 }
 
 
