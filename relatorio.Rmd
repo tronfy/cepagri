@@ -86,3 +86,26 @@ Assim como na análise de temperatura, é facil perceber diferenças entre as es
 
 Ao analisar o gráfico de vento médio visualmente, não se percebe diferenças significativas entre cada estação mas, em alguns casos, parece que há mais vento no inverno.
 Para testar essa hipótese, vamos analisar a correlação entre temperatura e vento.
+
+
+## Ao Longo do Dia
+
+Como nossa segunda analise, decidimos estudar quais eram as temperaturas, taxas de umidade e velocidades do vento médias por hora no período em questão, como visto nos gráficos a seguir:
+
+### Temperatura
+
+![](./plot/hora_temp.png)
+
+Ao analizar o gráfico da temperatura média por hora, descobrimos que a temperatura tende a aumentar progressivamente das 6:00 da manhã até as 15:00 da tarde, quando atinge seu pico, e então diminuir até as 6:00 da manhã do dia seguinte.
+
+### Umidade
+
+![](./plot/hora_umid.png)
+
+Em contrapartida, ao analizar o gráfico de umidade média por hora, podemos observar que seu comportamento é o oposto do esperado após realizar a análise das relações entre as estações do ano, e a temperatuda, umidade e velocidade do vento, onde a umidade tendia a ser maior quanto maior fosse a temperatura. Aqui, vemos que a umidade encontra-se em seu pico as 6:00 da manhã, de onde diminui até atingir seu mínimo às 15:00 da tarde, para então aumentar até as 6:00 da manhã do dia seguinte.
+
+### Vento
+
+![](./plot/hora_vent.png)
+
+O comportamente da velocidade do vento observada no gráfico de velocidade do vento média por hora por outro lado, é bem curioso, a velocidade do vento tende a atingir seu ponto mínimo as 7:00, permanece sem grandes mudanças até as 18:00 da tarde, e então aumenta até atingir seu ponto máximo às 22:00 da noite, diminuindo, gradualmente, até as 7:00 do próximo dia, sendo assim, maior durante o período noturno, e menor durante o dia.
