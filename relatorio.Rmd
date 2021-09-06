@@ -1,9 +1,10 @@
 ---
 title: "Relatório de análise dos dados do Cepagri"
 output:
-  pdf_document: default
   html_notebook: default
-  word_document: default
+  md_document:
+    variant: markdown_github
+  pdf_document: default
 ---
 
 ```{r load-packages, include=FALSE}
@@ -26,7 +27,7 @@ Este relatório descreve as análises feitas por nosso grupo sobre os dados mete
 ```{r}
 # fazer download do arquivo, se necessário
 if (!file.exists("cepagri.csv")) {
-  download.file('http://ic.unicamp.br/~zanoni/cepagri/cepagri.csv', 'cepagri.csv')
+  download.file("http://ic.unicamp.br/~zanoni/cepagri/cepagri.csv", "cepagri.csv")
 }
 
 # ler dataset .csv
@@ -57,13 +58,31 @@ Depois, extraímos o período de tempo que vamos estudar: do primeiro dia de 201
 # extrair dados entre 2015-01-01 e 2020-12-31
 df <- df[
   df$horario >= "2015-01-01" &
-  df$horario <= "2020-12-31",
+    df$horario <= "2020-12-31",
 ]
 ```
 
 
-## Média diária
+## Estações do ano
+
+Nessa análise, esperamos encontrar relações entre a estação do ano e as leituras de temperatura, umidade, e vento.
+
+### Temperatura
 
 ![](./plot/diario_temp.png)
+
+Ao analisar as médias de temperatura, podemos claramente relacioná-las às estações do ano, visto que o verão se destaca com médias mais altas; e o inverno com médias mais baixas.
+Enquanto isso, primavera e verão aparecem como épocas de "transição" entre os dois extremos, com as temperaturas caindo ao longo do outono, e se elevando ao longo da primavera.
+
+### Umidade
+
 ![](./plot/diario_umid.png)
+
+Assim como na análise de temperatura, é facil perceber diferenças entre as estações: em geral, o verão apresenta umidade maior e o inverno umidade menor, com as estações restantes apresentando dados similares, entre as duas estações limiares.
+
+### Vento
+
 ![](./plot/diario_vent.png)
+
+Ao analisar o gráfico de vento médio visualmente, não se percebe diferenças significativas entre cada estação mas, em alguns casos, parece que há mais vento no inverno.
+Para testar essa hipótese, vamos analisar a correlação entre temperatura e vento.
