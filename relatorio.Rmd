@@ -12,6 +12,7 @@ library(ggplot2)
 library(dplyr)
 library(lubridate)
 library(tidyverse)
+library(knitr)
 ```
 
 ## Integrantes
@@ -63,7 +64,7 @@ df <- df[
 ```
 
 
-## Estações do ano
+## Estações do Ano
 
 Nessa análise, esperamos encontrar relações entre a estação do ano e as leituras de temperatura, umidade, e vento.
 
@@ -72,6 +73,7 @@ Nessa análise, esperamos encontrar relações entre a estação do ano e as lei
 ![](./plot/diario_temp.png)
 
 Ao analisar as médias de temperatura, podemos claramente relacioná-las às estações do ano, visto que o verão se destaca com médias mais altas; e o inverno com médias mais baixas.
+
 Enquanto isso, primavera e verão aparecem como épocas de "transição" entre os dois extremos, com as temperaturas caindo ao longo do outono, e se elevando ao longo da primavera.
 
 ### Umidade
@@ -84,8 +86,9 @@ Assim como na análise de temperatura, é facil perceber diferenças entre as es
 
 ![](./plot/diario_vent.png)
 
-Ao analisar o gráfico de vento médio visualmente, não se percebe diferenças significativas entre cada estação mas, em alguns casos, parece que há mais vento no inverno.
-Para testar essa hipótese, vamos analisar a correlação entre temperatura e vento.
+Ao analisar o gráfico de vento médio visualmente, não se percebe diferenças significativas entre cada estação.
+
+Vamos confirmar a baixa correlação entre vento e os outros dados quando analisarmos a matriz de correlação entre eles.
 
 
 ## Ao Longo do Dia
@@ -109,3 +112,35 @@ Em contrapartida, ao analizar o gráfico de umidade média por hora, podemos obs
 ![](./plot/hora_vent.png)
 
 O comportamente da velocidade do vento observada no gráfico de velocidade do vento média por hora por outro lado, é bem curioso, a velocidade do vento tende a atingir seu ponto mínimo as 7:00, permanece sem grandes mudanças até as 18:00 da tarde, e então aumenta até atingir seu ponto máximo às 22:00 da noite, diminuindo, gradualmente, até as 7:00 do próximo dia, sendo assim, maior durante o período noturno, e menor durante o dia.
+
+
+## Correlação entre Dados
+
+A melhor forma de encontrar relações entre dados coletados é com uma matriz de correlação.
+
+Vamos, então, gerar uma matriz de correlação entre todas as colunas de dados coletados.
+
+```{r echo = FALSE, results = 'asis'}
+kable(cor(df[,c("temp", "umid", "vento", "sensa")]))
+```
+
+![](./plot/matriz_cor.png)
+
+### Temperatura, Umidade e Vento
+
+Ao analisar a correlação entre umidade/vento e temperatura, podemos notar que:
+
+* **umidade**: correlação de **-60%**
+* **vento**: correlação de **-16%**
+
+Com isso, podemos concluir que tanto o vento quanto a umidade tendem a ocorrer em conjunto com baixas temperaturas.
+
+### Sensação Térmica
+
+A primeira vista, quando analisamos a matriz podemos perceber que a correlação em maior destaque é que a temperatura afeta diretamente a sensação térmica, sendo aproximadamente 88% relacionadas. Isso faz sentido, porque, se estiver mais calor, as pessoas provavelmente vão sentir mais calor.
+
+Além dessa, podemos encontrar outras correlações:
+
+* **aprox. 88%** temperatura: maior temperatura causa maior sensação térmica
+* **aprox. -58%** umidade: menor umidade causa maior sensação térmica
+* **aprox. -21%** vento: menos vento causa maior sensação térmica

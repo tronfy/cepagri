@@ -1,4 +1,5 @@
 library(ggplot2)
+library(ggcorrplot)
 library(dplyr)
 library(lubridate)
 library(tidyverse)
@@ -65,9 +66,13 @@ diario <- df %>%
   summarize(
     temp_media = mean(temp),
     umid_media = mean(umid),
-    vent_media = mean(vento)
+    vent_media = mean(vento),
+    sens_media = mean(sensa)
   )
 diario <- within(diario, estacao <- estacao(data))
+
+matcor <- cor(df[,c("temp", "umid", "vento", "sensa")])
+salvar("matriz_cor", ggcorrplot(matcor, method ="circle"))
 
 salvar("diario_temp", ggplot(diario, aes(data, temp_media)) +
   geom_point(aes(colour = estacao)) +
