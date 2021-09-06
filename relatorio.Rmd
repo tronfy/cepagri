@@ -24,6 +24,11 @@ library(tidyverse)
 Este relatório descreve as análises feitas por nosso grupo sobre os dados meteorológicos do Cepagri/Unicamp, no período correspondido de 01/01/2015 a 31/12/2020. Os dados foram lidos de um arquivo CSV, disponível [aqui](https://ic.unicamp.br/~zanoni/cepagri/cepagri.csv).
 
 ```{r}
+# fazer download do arquivo, se necessário
+if (!file.exists("cepagri.csv")) {
+  download.file('http://ic.unicamp.br/~zanoni/cepagri/cepagri.csv', 'cepagri.csv')
+}
+
 # ler dataset .csv
 names <- c("horario", "temp", "vento", "umid", "sensa")
 cepagri <- read.csv("cepagri.csv", header = FALSE, sep = ";", col.names = names)
@@ -37,7 +42,7 @@ Fizemos um tratamento inicial aos tipos de dados, para que a coluna de `horario`
 ```{r}
 # criar dataframe, tratar tipos de coluna e erros
 df <- data.frame(cepagri)
-# ignorar warning de leituras N/A, pois vamos corrigir isso na próxima linha
+# ignorar warning de leituras N/A, vamos corrigir isso na próxima linha
 suppressWarnings({
   df <- df %>%
     mutate(horario = as_datetime(df$horario, format = "%d/%m/%Y-%H:%M")) %>%

@@ -3,6 +3,11 @@ library(dplyr)
 library(lubridate)
 library(tidyverse)
 
+# fazer download do arquivo, se necessário
+if (!file.exists("cepagri.csv")) {
+  download.file('http://ic.unicamp.br/~zanoni/cepagri/cepagri.csv', 'cepagri.csv')
+}
+
 # ler dataset .csv
 names <- c("horario", "temp", "vento", "umid", "sensa")
 cepagri <- read.csv("cepagri.csv", header = FALSE, sep = ";", col.names = names)
