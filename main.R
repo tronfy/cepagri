@@ -93,6 +93,36 @@ salvar("diario_vent", ggplot(diario, aes(data, vent_media)) +
   scale_color_manual(values = estacao_cores))
 
 
+### mês ###
+
+mes <- df %>%
+  mutate(data = floor_date(df$horario, unit = "month")) %>%
+  group_by(data) %>%
+  summarize(
+    temp_media = mean(temp),
+    umid_media = mean(umid),
+    vent_media = mean(vento),
+    sens_media = mean(sensa)
+  )
+
+# temp x umid
+salvar("comp_temp_umid", ggplot(mes, aes(data, umid_media)) +
+         geom_bar(stat="identity", fill="#7B9DF0") +
+         geom_line(aes(data, temp_media, colour="#DB7268")) +
+         geom_point(aes(data, temp_media, colour="#DB7268")) +
+         labs(y = "temperatura/umidade") +
+         ggtitle("temperatura e umidade médias por dia") +
+         theme(legend.position="none"))
+
+# temp x vento
+salvar("comp_temp_vento", ggplot(mes, aes(data, vent_media)) +
+         geom_bar(stat="identity", fill="#7B9DF0") +
+         geom_line(aes(data, temp_media, colour="#DB7268")) +
+         geom_point(aes(data, temp_media, colour="#DB7268")) +
+         labs(y = "temperatura/vento") +
+         ggtitle("temperatura e vento médios por dia") +
+         theme(legend.position="none"))
+
 ### MÉDIAS POR HORA ###
 porHora <- df %>%
   mutate(hora = hour(horario)) %>%

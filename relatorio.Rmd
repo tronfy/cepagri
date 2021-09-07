@@ -80,7 +80,7 @@ Enquanto isso, primavera e verão aparecem como épocas de "transição" entre o
 
 ![](./plot/diario_umid.png)
 
-Assim como na análise de temperatura, é facil perceber diferenças entre as estações: em geral, o verão apresenta umidade maior e o inverno umidade menor, com as estações restantes apresentando dados similares, entre as duas estações limiares.
+Assim como na análise de temperatura, é facil perceber diferenças entre as estações: em geral, o verão apresenta umidade maior e o inverno umidade menor, com as estações restantes apresentando dados similares entre as duas outras estações.
 
 ### Vento
 
@@ -105,7 +105,7 @@ Ao analisar o gráfico da temperatura média por hora, descobrimos que a tempera
 
 ![](./plot/hora_umid.png)
 
-Em contrapartida, ao analisar o gráfico de umidade média por hora, podemos observar que seu comportamento é o oposto do esperado após realizar a análise das relações entre as estações do ano, e a temperatuda, umidade e velocidade do vento, onde a umidade tendia a ser maior quanto maior fosse a temperatura. Aqui, vemos que a umidade encontra-se em seu pico as 6:00 da manhã, de onde diminui até atingir seu mínimo às 15:00 da tarde, para então aumentar até as 6:00 da manhã do dia seguinte.
+Em contrapartida, ao analisar o gráfico de umidade média por hora, podemos observar que seu comportamento é o oposto do esperado após realizar a análise das relações entre as estações do ano, e a temperatura, umidade e velocidade do vento, onde a umidade tendia a ser maior quanto maior fosse a temperatura. Aqui, vemos que a umidade encontra-se em seu pico as 6:00 da manhã, de onde diminui até atingir seu mínimo às 15:00 da tarde, para então aumentar até as 6:00 da manhã do dia seguinte.
 
 ### Vento
 
@@ -133,7 +133,11 @@ Ao analisar a correlação entre umidade/vento e temperatura, podemos notar que:
 * **umidade**: correlação de **-60%**
 * **vento**: correlação de **-16%**
 
-Com isso, podemos concluir que tanto o vento quanto a umidade tendem a ocorrer em conjunto com baixas temperaturas.
+Com isso, podemos concluir que tanto o vento quanto a umidade tendem a ocorrer em conjunto com baixas temperaturas, sendo a relação temperatura-umidade mais forte do que a relação temperatura-vento. O mesmo pode ser observado nos gráficos a seguir:
+
+![](./plot/comp_temp_umid.png)
+
+![](./plot/comp_temp_vento.png)
 
 ### Sensação Térmica
 
@@ -147,7 +151,7 @@ Além dessa, podemos encontrar outras correlações:
 
 
 
-### Crise Hídrica de 2014-2015
+## Crise Hídrica de 2014-2015
 
 Houve uma grande e famosa crise hídrica em todo o Brasil nos anos de 2014 e 2015. Levando em conta que temos em mãos os dados do CEPAGRI de 2015, um dos anos da crise, decidimos analisar a umidade no ano de 2015 usando o gráfico de umidade diária.
 
