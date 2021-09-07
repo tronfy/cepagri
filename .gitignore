@@ -109,9 +109,6 @@ $RECYCLE.BIN/
 # Base de dados do Cepagri
 cepagri.csv
 
-# graficos salvos
-plot/
-
 # RStudio Knit: output do relatório
 *.log
 *.tex
