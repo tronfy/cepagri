@@ -1,10 +1,10 @@
 ---
 title: "Relatório de análise dos dados do Cepagri"
 output:
-  html_notebook: default
+  pdf_document: default
   md_document:
     variant: markdown_github
-  pdf_document: default
+  html_notebook: default
 ---
 
 ```{r load-packages, include=FALSE}
@@ -68,6 +68,38 @@ df <- df[
 
 Nessa análise, esperamos encontrar relações entre a estação do ano e as leituras de temperatura, umidade, e vento.
 
+```{r echo = FALSE, results = 'asis'}
+estacao <- function(data) {
+  data <- as.Date(data)
+  ndata <- 100 * month(data) + day(data)
+  cuts <- base::cut(ndata, breaks = c(0, 319, 0620, 0921, 1220, 1231))
+  levels(cuts) <- c("verão", "outono", "inverno", "primavera", "verão")
+  return(as.character(cuts))
+}
+
+diario <- df %>%
+  mutate(data = floor_date(df$horario, unit = "day")) %>%
+  group_by(data) %>%
+  summarize(
+    temp_media = mean(temp),
+    umid_media = mean(umid),
+    vent_media = mean(vento),
+    sens_media = mean(sensa)
+  )
+diario <- within(diario, estacao <- estacao(data))
+
+kable(
+  diario %>% 
+    group_by(estacao) %>% 
+    summarise(
+      temp = mean(temp_media),
+      umid = mean(umid_media),
+      vent = mean(vent_media)
+    )
+)
+```
+
+
 ### Temperatura
 
 ![](./plot/diario_temp.png)
@@ -95,6 +127,18 @@ Vamos confirmar a baixa correlação entre vento e os outros dados quando analis
 
 Como nossa segunda analise, decidimos estudar quais eram as temperaturas, taxas de umidade e velocidades do vento médias por hora no período em questão, como visto nos gráficos a seguir:
 
+```{r echo = FALSE, results = 'asis'}
+kable(df %>%
+        mutate(hora = hour(horario)) %>%
+        group_by(hora) %>%
+        summarize(
+          temp = mean(temp),
+          umid = mean(umid),
+          vent = mean(vento),
+        )
+)
+```
+
 ### Temperatura
 
 ![](./plot/hora_temp.png)
@@ -112,6 +156,7 @@ Em contrapartida, ao analisar o gráfico de umidade média por hora, podemos obs
 ![](./plot/hora_vent.png)
 
 O comportamente da velocidade do vento observada no gráfico de velocidade do vento média por hora por outro lado, é bem curioso, a velocidade do vento tende a atingir seu ponto mínimo as 7:00, permanece sem grandes mudanças até as 18:00 da tarde, e então aumenta até atingir seu ponto máximo às 22:00 da noite, diminuindo, gradualmente, até as 7:00 do próximo dia, sendo assim, maior durante o período noturno, e menor durante o dia.
+
 
 
 ## Correlação entre Dados
@@ -163,6 +208,19 @@ Vemos no gráfico que a umidade no começo de 2015 estava comparativamente alta 
 ## Média Anual
 
 Nós já fizemos análises da média dos valores em cada dia analizado, da média por hora, e decidimos realizar a análise da média por ano, montando gráficos de linha para facilitar nosso trabalho.
+
+```{r echo = FALSE, results = 'asis'}
+kable(df %>%
+        mutate(ano = year(horario)) %>%
+        group_by(ano) %>%
+        summarize(
+          temp_media = mean(temp),
+          umid_media = mean(umid),
+          vent_media = mean(vento),
+        )
+)
+```
+
 
 ### Média Anual da Temperatura
 

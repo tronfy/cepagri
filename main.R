@@ -32,10 +32,13 @@ df <- df[
     df$horario <= "2020-12-31",
 ]
 
+# função para facilitar salvamento de gráficos
 salvar <- function(filename, plot, aspect_ratio = 2.5) {
+  # criar diretório de gráficos, se não existir
   if (!dir.exists("plot")) {
     dir.create("plot")
   }
+  # salvar o gráfico, aplicando tema e tamanho
   ggsave(
     paste("plot/", filename, ".png", sep = ""),
     plot + theme(text = element_text(size = 20)),
@@ -44,36 +47,64 @@ salvar <- function(filename, plot, aspect_ratio = 2.5) {
 }
 
 
+
 ### Estações do Ano ###
 
+# cores para os gráficos de dispersão
 estacao_cores <- c(
   verão = "#DB7268",
   primavera = "#91F57F",
   outono = "#8AF5E1",
   inverno = "#7B9DF0"
 )
+
+# dado uma data, retorna a estação do ano da mesma
 estacao <- function(data) {
   data <- as.Date(data)
+  
+  # separa mês do dia, ex: 22/11 -> 1122
   ndata <- 100 * month(data) + day(data)
-  cuts <- base::cut(ndata, breaks = c(0, 319, 0620, 0921, 1220, 1231))
+  
+  # determina em qual corte a data está
+  # 20/03 - equinócio de outono
+  # 21/06 - solstício de inverno
+  # 22/09 - equinócio de primavera
+  # 21/12 - solstício de verão
+  cuts <- base::cut(ndata, breaks = c(0, 0320, 0621, 0922, 1221, 1231))
   levels(cuts) <- c("verão", "outono", "inverno", "primavera", "verão")
+  
+  # retorna o nome da estação
   return(as.character(cuts))
 }
 
 diario <- df %>%
+  # arrendondar dados no nível de dia, e agrupá-los
   mutate(data = floor_date(df$horario, unit = "day")) %>%
   group_by(data) %>%
+  # extrair médias por dia
   summarize(
     temp_media = mean(temp),
     umid_media = mean(umid),
     vent_media = mean(vento),
     sens_media = mean(sensa)
   )
+# computar estações para cada data
 diario <- within(diario, estacao <- estacao(data))
 
+# gerar e salvar uma matriz de correlação entre todos os dados
 matcor <- cor(df[,c("temp", "umid", "vento", "sensa")])
 salvar("matriz_cor", ggcorrplot(matcor, method ="circle"))
 
+# (tabela) extrair médias por estação
+diario %>% 
+  group_by(estacao) %>% 
+  summarise(
+    temp = mean(temp_media),
+    umid = mean(umid_media),
+    vent = mean(vent_media)
+  )
+
+# salvar gráficos de média diária
 salvar("diario_temp", ggplot(diario, aes(data, temp_media)) +
   geom_point(aes(colour = estacao)) +
   labs(y = "temperatura média") +
@@ -93,11 +124,38 @@ salvar("diario_vent", ggplot(diario, aes(data, vent_media)) +
   scale_color_manual(values = estacao_cores))
 
 
-### mês ###
 
+### Ao Longo do Dia ###
+
+porHora <- df %>%
+  # extrair a hora de cada medição, e agrupa por ela
+  mutate(hora = hour(horario)) %>%
+  group_by(hora) %>%
+  # calcula a média por hora
+  summarize(
+    temp_media = mean(temp),
+    umid_media = mean(umid),
+    vent_media = mean(vento),
+  )
+
+# salvar gráficos de média por hora
+salvar("hora_temp", ggplot(porHora, aes(x = hora, y = temp_media)) + geom_bar(stat="identity"))
+salvar("hora_umid", ggplot(porHora, aes(x = hora, y = umid_media)) + geom_bar(stat="identity"))
+salvar("hora_vent", ggplot(porHora, aes(x = hora, y = vent_media)) + geom_bar(stat="identity"))
+
+
+
+### Correlação entre Dados ###
+
+# (tabela) correlação geral
+cor(df[,c("temp", "umid", "vento", "sensa")])
+
+# extrair médias mensais
 mes <- df %>%
+  # arrendondar dados no nível de mês, e agrupá-los
   mutate(data = floor_date(df$horario, unit = "month")) %>%
   group_by(data) %>%
+  # extrair médias por mês
   summarize(
     temp_media = mean(temp),
     umid_media = mean(umid),
@@ -105,7 +163,7 @@ mes <- df %>%
     sens_media = mean(sensa)
   )
 
-# temp x umid
+# salvar comparação temperatura x umidade
 salvar("comp_temp_umid", ggplot(mes, aes(data, umid_media)) +
          geom_bar(stat="identity", fill="#7B9DF0") +
          geom_line(aes(data, temp_media, colour="#DB7268")) +
@@ -114,7 +172,7 @@ salvar("comp_temp_umid", ggplot(mes, aes(data, umid_media)) +
          ggtitle("temperatura e umidade médias por dia") +
          theme(legend.position="none"))
 
-# temp x vento
+# salvar comparação temperatura x vento
 salvar("comp_temp_vento", ggplot(mes, aes(data, vent_media)) +
          geom_bar(stat="identity", fill="#7B9DF0") +
          geom_line(aes(data, temp_media, colour="#DB7268")) +
@@ -123,22 +181,11 @@ salvar("comp_temp_vento", ggplot(mes, aes(data, vent_media)) +
          ggtitle("temperatura e vento médios por dia") +
          theme(legend.position="none"))
 
-### MÉDIAS POR HORA ###
-porHora <- df %>%
-  mutate(hora = hour(horario)) %>%
-  group_by(hora) %>%
-  summarize(
-    temp_media = mean(temp),
-    umid_media = mean(umid),
-    vent_media = mean(vento),
-  )
-
-salvar("hora_temp", ggplot(porHora, aes(x = hora, y = temp_media)) + geom_bar(stat="identity"))
-salvar("hora_umid", ggplot(porHora, aes(x = hora, y = umid_media)) + geom_bar(stat="identity"))
-salvar("hora_vent", ggplot(porHora, aes(x = hora, y = vent_media)) + geom_bar(stat="identity"))
 
 
-### MÉDIAS POR ANO ###
+### Média Anual ###
+
+# extrair médias anuais
 porAno <- df %>%
   mutate(ano = year(horario)) %>%
   group_by(ano) %>%
@@ -147,6 +194,8 @@ porAno <- df %>%
     umid_media = mean(umid),
     vent_media = mean(vento),
   )
+
+# salvar gráficos de médias anuais
 salvar("ano_temp", ggplot(porAno, aes(x = ano, y = temp_media)) + geom_line(color = "red") 
        + geom_point(shape = 21, color = "black", fill = "red", size = 4) 
        + ggtitle("Temperatura Média no Ano"))
@@ -156,4 +205,3 @@ salvar("ano_umid", ggplot(porAno, aes(x = ano, y = umid_media)) + geom_line(colo
 salvar("ano_vent", ggplot(porAno, aes(x = ano, y = vent_media)) + geom_line(color = "green") 
        + geom_point(shape = 21, color = "black", fill = "green", size = 4) 
        + ggtitle("Velocidade do Vento Média no Ano"))
-print(porAno)
