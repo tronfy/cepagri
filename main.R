@@ -106,3 +106,24 @@ porHora <- df %>%
 salvar("hora_temp", ggplot(porHora, aes(x = hora, y = temp_media)) + geom_bar(stat="identity"))
 salvar("hora_umid", ggplot(porHora, aes(x = hora, y = umid_media)) + geom_bar(stat="identity"))
 salvar("hora_vent", ggplot(porHora, aes(x = hora, y = vent_media)) + geom_bar(stat="identity"))
+
+
+### MÉDIAS POR ANO ###
+porAno <- df %>%
+  mutate(ano = year(horario)) %>%
+  group_by(ano) %>%
+  summarize(
+    temp_media = mean(temp),
+    umid_media = mean(umid),
+    vent_media = mean(vento),
+  )
+salvar("ano_temp", ggplot(porAno, aes(x = ano, y = temp_media)) + geom_line(color = "red") 
+       + geom_point(shape = 21, color = "black", fill = "red", size = 4) 
+       + ggtitle("Temperatura Média no Ano"))
+salvar("ano_umid", ggplot(porAno, aes(x = ano, y = umid_media)) + geom_line(color = "blue") 
+       + geom_point(shape = 21, color = "black", fill = "blue", size = 4) 
+       + ggtitle("Umidade Média no Ano"))
+salvar("ano_vent", ggplot(porAno, aes(x = ano, y = vent_media)) + geom_line(color = "green") 
+       + geom_point(shape = 21, color = "black", fill = "green", size = 4) 
+       + ggtitle("Velocidade do Vento Média no Ano"))
+print(porAno)
