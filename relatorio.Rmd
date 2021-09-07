@@ -154,3 +154,26 @@ Houve uma grande e famosa crise hídrica em todo o Brasil nos anos de 2014 e 201
 ![](./plot/diario_umid.png)
 
 Vemos no gráfico que a umidade no começo de 2015 estava comparativamente alta com relação ao mesmo período dos demais anos da análise. Tal resultado nos deixou surpresos, uma vez em que acretitávamos que a umidade relativa do ar tenderia a ser menor com relação à um ano sem crise hídrica. Talvez a água que estava em falta tivesse evaporado e se encontrava no ar, o que explicaria a elevada umidade do ar, embora deixaria questões sobre o por que da falta de chuvas.
+
+
+## Média Anual
+
+Nós já fizemos análises da média dos valores em cada dia analizado, da média por hora, e decidimos realizar a análise da média por ano, montando gráficos de linha para facilitar nosso trabalho.
+
+### Média Anual da Temperatura
+
+![](./plot/ano_temp.png)
+
+Antes de analisarmos o gráfico da média anual da temperatura, pensamos que, com tantas discussões a cerca do aquecimento global, o gráfico tenderia a aumentar progressivamente com o passar dos anos, talvez com a variação de décimos de graus Celsius. Para nossa surpresa, o gráfico não seguiu nenhum padrão, com variações de quase 1 grau entre o ano de menor e o de maior média, sendo respectivamente 2016 e 2018, sendo muito inconstante. Percebemos que não seria possível obter nenhum resultado consistente sobre o aquecimento global tendo como base os dados de apenas 6 anos.
+
+### Média Anual da Umidade
+
+![](./plot/ano_umid.png)
+
+Nos anos estudados, a umidade estava em seu ápice no ano de 2015, estando acima de 75% de umidade relativa, tendo uma pequena queda em 2016, para algo em torno de 74%, uma grande queda em 2017, atingindo algo pouco acima de 65%, continuando a queda em 2018, até atingir pouco menos de 65%, subindo drasticamente para algo em torno de 71% em 2019, tendo uma pequena queda para algo próximo à 69% em 2020. Chegamos à conclusão de que variações pequenas, de 0% a 2,5% na umidade de dois anos é uma ocorrência comum, enquanto variações de mais de 2,5%, embora mais raras, ainda podem ocorrer.
+
+### Média Anual da Velocidade do Vento
+
+![](./plot/ano_vent.png)
+
+Analisando o gráfico, chegamos à conclusão que a velocidade média do vento está sujeita a grandes variações, como as ocorridas entre 2018 e 2019 e entre 2019 e 2020, no entanto, devido à termos poucos dados, não é possível analisar as tendências da velocidade média do vento nem estimar valores para suas variações.
