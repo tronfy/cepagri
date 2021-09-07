@@ -1,9 +1,9 @@
 ---
 title: "Relatório de análise dos dados do Cepagri"
 output:
-  pdf_document: default
   md_document:
     variant: markdown_github
+  pdf_document: default
   html_notebook: default
 ---
 
